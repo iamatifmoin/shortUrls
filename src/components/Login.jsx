@@ -14,8 +14,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-// import { useAuth } from "@/context/AuthContext";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -25,7 +25,7 @@ const formSchema = z.object({
 });
 
 const Login = () => {
-  // const { setUser } = useAuth();
+  const { setUser } = useAuth();
   const navigate = useNavigate();
 
   const form = useForm({
@@ -35,34 +35,37 @@ const Login = () => {
       password: "",
     },
   });
+  const { setError } = form;
+  let [searchParams] = useSearchParams();
+  const longUrl = searchParams.get("createNew");
 
-  const generateError = (err) => toast.error(err, { position: "bottom-right" });
-
-  // if (data && !data.errors) {
-  //   localStorage.setItem("user", JSON.stringify(data.user));
-  //   setUser(data.user);
-  //   navigate("/");
-  // }
+  // const generateError = (err) => toast.error(err, { position: "bottom-right" });
 
   const onSubmit = async (values) => {
     try {
-      const { data } = await axios.post(
-        "http://localhost:4000/login",
-        {
-          ...values,
-        },
-        {
-          withCredentials: true,
+      const res = await axios.post("http://localhost:4000/login", values, {
+        withCredentials: true,
+      });
+
+      const data = res.data;
+
+      if (data.errors) {
+        if (data.errors.email) {
+          setError("email", { type: "manual", message: data.errors.email });
         }
-      );
-      if (data) {
-        if (data.errors) {
-          const { email, password } = data.errors;
-          if (email) generateError(email);
-          else if (password) generateError(password);
-        } else {
-          navigate("/");
+        if (data.errors.password) {
+          setError("password", {
+            type: "manual",
+            message: data.errors.password,
+          });
         }
+      } else {
+        toast.success("Logged in successfully!", { position: "bottom-right" });
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setUser(data.user); // if using context
+        setTimeout(() => {
+          navigate(`/dashboard?${longUrl ? `createNew=${longUrl}` : ""}`);
+        }, 1500);
       }
     } catch (err) {
       console.log(err);

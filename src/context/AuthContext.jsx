@@ -1,32 +1,46 @@
-// import React, { createContext, useContext, useState, useEffect } from "react";
-// import axios from "axios";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
-// const AuthContext = createContext();
+const AuthContext = createContext();
 
-// export const AuthProvider = ({ children }) => {
-//   const [user, setUser] = useState(null);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
 
-//   // Example: check if user is already logged in (optional)
-//   useEffect(() => {
-//     const checkAuth = async () => {
-//       try {
-//         const res = await axios.get("http://localhost:4000/check-auth", {
-//           withCredentials: true,
-//         });
-//         setUser(res.data.user); // assumes backend sends user info
-//       } catch (err) {
-//         setUser(null);
-//       }
-//     };
-//     checkAuth();
-//   }, []);
+  // Load from localStorage on initial mount
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
 
-//   return (
-//     <AuthContext.Provider value={{ user, setUser }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
+  // Cross-tab sync: logout when localStorage changes in another tab
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (event.key === "user") {
+        const newUser = event.newValue ? JSON.parse(event.newValue) : null;
+        setUser(newUser);
+      }
+    };
 
-// // ✅ Custom hook to access auth context
-// export const useAuth = () => useContext(AuthContext);
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  const login = (userData) => {
+    localStorage.setItem("user", JSON.stringify(userData));
+    setUser(userData);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, setUser: login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(AuthContext);

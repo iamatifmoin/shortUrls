@@ -19,16 +19,20 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.statics.login = async function (email, password) {
-  const user = await this.findOne({ email });
-  if (user) {
-    const auth = await bcrypt.compare(password, user.password);
-    if (auth) {
-      return user;
-    }
-    throw Error("Incorrect Password.");
-  }
-  throw Error("Incorrect Email.");
+// userSchema.statics.login = async function (email, password) {
+//   const user = await this.findOne({ email });
+//   if (user) {
+//     const auth = await bcrypt.compare(password, user.password);
+//     if (auth) {
+//       return user;
+//     }
+//     throw Error("Incorrect Password.");
+//   }
+//   throw Error("Incorrect Email.");
+// };
+
+userSchema.methods.comparePassword = function (password) {
+  return bcrypt.compare(password, this.password);
 };
 
 module.exports = mongoose.model("Users", userSchema);

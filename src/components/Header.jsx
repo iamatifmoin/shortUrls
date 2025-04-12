@@ -10,11 +10,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Link2, LinkIcon, LogOut } from "lucide-react";
+import { LinkIcon, LogOut } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const navigate = useNavigate();
-  const user = false;
+  // const user = false;
+  const { user, setUser } = useAuth();
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    toast.success("Logged out successfully!", { position: "bottom-right" });
+    navigate("/");
+  };
+
   return (
     <nav className="py-4 flex justify-around items-center">
       <Link to="/">
@@ -34,15 +45,18 @@ const Header = () => {
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel className="text-center">
-                Atif Moin
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
+              {/* <DropdownMenuLabel className="text-center">
+                Welcome!
+              </DropdownMenuLabel> */}
+              {/* <DropdownMenuSeparator /> */}
               <DropdownMenuItem className="cursor-pointer">
                 <LinkIcon className="mr-2 h-4 w-4" />
                 My Links
               </DropdownMenuItem>
-              <DropdownMenuItem className="text-red-400 cursor-pointer">
+              <DropdownMenuItem
+                className="text-red-400 cursor-pointer"
+                onClick={handleLogout}
+              >
                 <LogOut className="mr-2 h-4 w-4 stroke-red-400" />
                 <span>Logout</span>
               </DropdownMenuItem>
