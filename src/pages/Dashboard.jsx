@@ -5,8 +5,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Filter } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import LinkCard from "../components/LinkCard";
+import CreateLink from "../components/CreateLink";
 
 const Dashboard = () => {
   const { user, loading } = useAuth();
@@ -82,7 +83,7 @@ const Dashboard = () => {
       </div>
       <div className="flex justify-between">
         <h1 className="text-4xl font-extrabold">My Links</h1>
-        <Button>Create Link</Button>
+        <CreateLink />
       </div>
       <div className="relative">
         <Input
@@ -97,11 +98,14 @@ const Dashboard = () => {
         filteredUrls.map((url) => (
           <Card key={url._id}>
             <CardHeader>
-              <CardTitle>{url.title || "Untitled"}</CardTitle>
+              <LinkCard
+                url={url}
+                key={url._id}
+                onDelete={(id) =>
+                  setUrls((prev) => prev.filter((item) => item._id !== id))
+                }
+              />
             </CardHeader>
-            <CardContent>
-              <p>Original: {url.original_url}</p>
-            </CardContent>
           </Card>
         ))
       ) : (
