@@ -1,44 +1,27 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // ensure this is true at first
 
-  // Load from localStorage on initial mount
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
+    setLoading(false); // set loading false only after reading localStorage
   }, []);
-
-  // Cross-tab sync: logout when localStorage changes in another tab
-  useEffect(() => {
-    const handleStorageChange = (event) => {
-      if (event.key === "user") {
-        const newUser = event.newValue ? JSON.parse(event.newValue) : null;
-        setUser(newUser);
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
-
-  const login = (userData) => {
-    localStorage.setItem("user", JSON.stringify(userData));
-    setUser(userData);
-  };
 
   const logout = () => {
-    localStorage.removeItem("user");
     setUser(null);
+    localStorage.removeItem("user");
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser: login, logout }}>
-      {children}
+    <AuthContext.Provider value={{ user, setUser, logout, loading }}>
+      {!loading && children} {/* ✅ block children until auth is ready */}
     </AuthContext.Provider>
   );
 };

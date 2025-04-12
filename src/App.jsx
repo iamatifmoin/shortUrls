@@ -50,6 +50,9 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const { loading } = useAuth();
+
+  if (loading) return <div>Loading app...</div>;
   return (
     <AuthProvider>
       <RouterProvider router={router} />

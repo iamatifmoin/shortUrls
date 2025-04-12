@@ -19,7 +19,7 @@ const handleErrors = (err) => {
     errors.email = "Password is incorrect.";
 
   if (err.code === 11000) {
-    errors.email("Email already registered.");
+    errors.email = "Email already registered.";
     return errors;
   }
 
@@ -50,7 +50,8 @@ module.exports.register = async (req, res, next) => {
     // });
     res.cookie("jwt", token, {
       httpOnly: true, // Security: JS can't access it
-      secure: false, // Set to true in production (HTTPS only)
+      // secure: false, // Set to true in production (HTTPS only)
+      secure: process.env.NODE_ENV === "production",
       sameSite: "Lax", // Or "Strict" if you want tighter control
       maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
     });
@@ -84,13 +85,21 @@ module.exports.login = async (req, res) => {
     }
 
     const token = createToken(user._id);
-    res.cookie("jwt", token, {
-      httpOnly: false,
-      withCredentials: true,
-      maxAge: maxAge * 1000,
+    // res.cookie("jwt", token, {
+    //   httpOnly: false,
+    //   withCredentials: true,
+    //   maxAge: maxAge * 1000,
+    // });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Lax",
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
-    res.status(200).json({ user: user._id });
+    // res.status(200).json({ user: user._id });
+    res.status(200).json({ user: user._id, email: user.email });
   } catch (err) {
     console.log(err);
     res.status(500).json({ errors: { email: "Server error" } });

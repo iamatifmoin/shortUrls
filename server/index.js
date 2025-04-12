@@ -3,6 +3,8 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/AuthRoutes");
+const urlRoutes = require("./routes/URLRoutes");
+const clickRoutes = require("./routes/ClickRoutes");
 require("dotenv").config({ path: "./.env" });
 
 const app = express();
@@ -29,6 +31,8 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use("/", authRoutes);
+app.use("/", urlRoutes);
+app.use("/", clickRoutes);
 
 app.listen(4000, () => {
   console.log("🚀 Server started on Port 4000");
