@@ -66,7 +66,7 @@ const Login = () => {
       } else {
         toast.success("Logged in successfully!", { position: "bottom-right" });
         // ✅ Save JWT token and user
-        localStorage.setItem("jwt_token", data.token); // <-- store token
+        localStorage.setItem("token", data.token); // <-- store token
         localStorage.setItem("user", JSON.stringify(data.user));
         setUser(data.user);
 

@@ -67,7 +67,7 @@ const SignUp = () => {
             position: "bottom-right",
           });
 
-          localStorage.setItem("jwt_token", data.token); // <-- store token
+          localStorage.setItem("token", data.token); // <-- store token
           localStorage.setItem("user", JSON.stringify(data.user));
           setUser(data.user);
 

@@ -40,7 +40,7 @@ const CreateLink = ({ onLinkCreated }) => {
   const longLink = searchParams.get("createNew");
   const [isDialogOpen, setIsDialogOpen] = React.useState(!!longLink);
 
-  const token = localStorage.getItem("jwt_token");
+  const token = localStorage.getItem("token");
   const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   if (!token) {
