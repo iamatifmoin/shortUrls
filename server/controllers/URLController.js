@@ -74,6 +74,7 @@ const createURL = async (req, res) => {
       original_url: longUrl,
       custom_url: customUrl || "",
       qr: uploadData.secure_url,
+      short_url,
     });
 
     // Send the new URL data back to the client
