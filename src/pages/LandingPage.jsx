@@ -23,26 +23,29 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <h2 className="my-10 sm:my-16 text-3xl sm:text-6xl lh:text-7xl text-white text-center font-extrabold">
-        Welcome to shortUrls
+    <div className="min-h-screen flex flex-col justify-center items-center px-4 bg-black text-white">
+      <h2 className="mb-12 text-center text-4xl sm:text-6xl font-extrabold leading-tight max-w-3xl">
+        Welcome to <span className="text-white">shortUrls</span>
       </h2>
+
       <form
         onSubmit={handleShorten}
-        className="sm:h-14 flex flex-col sm:flex-row w-full md:w-2/4 gap-2"
+        className="w-full max-w-2xl flex flex-col sm:flex-row gap-3"
       >
         <Input
           type="url"
           value={longURL}
-          placeholder="Enter URL"
-          className="h-full flex-1 py-4 px-4"
           onChange={(e) => setLongURL(e.target.value)}
+          placeholder="Paste your long URL here..."
+          className="bg-white text-black placeholder:text-gray-500 py-6 px-4 flex-1"
         />
-        <Button className="h-full" type="submit">
-          Shorten This Url
+        <Button
+          type="submit"
+          className="py-6 px-6 bg-white text-black font-semibold hover:bg-gray-200 transition-all"
+        >
+          Shorten This URL
         </Button>
       </form>
-      {/* <img src="/banner.jpg" alt="" className="w-full my-11 md:px-11" /> */}
     </div>
   );
 };

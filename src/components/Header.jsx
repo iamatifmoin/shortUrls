@@ -5,8 +5,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
@@ -16,7 +14,6 @@ import { toast } from "react-toastify";
 
 const Header = () => {
   const navigate = useNavigate();
-  // const user = false;
   const { user, setUser } = useAuth();
 
   const handleLogout = () => {
@@ -27,40 +24,46 @@ const Header = () => {
   };
 
   return (
-    <nav className="py-4 flex justify-around items-center">
-      <Link to="/">
-        {/* <img src="/logo.png" className="h-16" alt="shortUrls logo" /> */}
-        <h1 className="text-4xl cursor-pointer">shortUrls</h1>
+    <nav className="py-4 px-6 flex justify-between items-center bg-black text-white">
+      <Link
+        to="/"
+        className="text-3xl font-bold cursor-pointer flex items-center"
+      >
+        <span className="text-white">short</span>
+        <span className="text-gradient bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+          Urls
+        </span>
       </Link>
 
       <div>
         {!user ? (
-          <Button onClick={() => navigate("/auth")}>Login</Button>
+          <Button
+            onClick={() => navigate("/auth")}
+            className="bg-white text-black hover:bg-gray-200"
+          >
+            Login
+          </Button>
         ) : (
           <DropdownMenu>
-            <DropdownMenuTrigger className="w-10 rounded-full overflow-hidden cursor-pointer">
+            <DropdownMenuTrigger className="w-12 h-12 rounded-full overflow-hidden cursor-pointer border border-white">
               <Avatar>
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {/* <DropdownMenuLabel className="text-center">
-                Welcome!
-              </DropdownMenuLabel> */}
-              {/* <DropdownMenuSeparator /> */}
-              <DropdownMenuItem className="cursor-pointer">
-                <Link to="/dashboard" className="flex">
-                  <LinkIcon className="mr-2 h-4 w-4" />
+            <DropdownMenuContent className="bg-black text-white shadow-lg rounded-md">
+              <DropdownMenuItem className="flex items-center cursor-pointer">
+                <Link to="/dashboard" className="flex items-center">
+                  <LinkIcon className="mr-2 h-5 w-5" />
                   My Links
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
-                className="text-red-400 cursor-pointer"
+                className="text-red-400 flex items-center cursor-pointer"
                 onClick={handleLogout}
               >
-                <LogOut className="mr-2 h-4 w-4 stroke-red-400" />
-                <span>Logout</span>
+                <LogOut className="mr-2 h-5 w-5 stroke-red-400" />
+                Logout
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

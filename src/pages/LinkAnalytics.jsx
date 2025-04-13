@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Line, Bar, Pie } from "react-chartjs-2";
+import { Line, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -36,12 +36,16 @@ const LinkAnalytics = () => {
 
   useEffect(() => {
     const fetchAnalytics = async () => {
-      const [clickRes, urlRes] = await Promise.all([
-        axios.get(`http://localhost:4000/clicks/${id}`),
-        axios.get(`http://localhost:4000/urls/${id}`),
-      ]);
-      setClicks(clickRes.data);
-      setUrl(urlRes.data);
+      try {
+        const [clickRes, urlRes] = await Promise.all([
+          axios.get(`http://localhost:4000/clicks/${id}`),
+          axios.get(`http://localhost:4000/urls/${id}`),
+        ]);
+        setClicks(clickRes.data);
+        setUrl(urlRes.data);
+      } catch (err) {
+        console.error("Failed to fetch analytics", err);
+      }
     };
 
     fetchAnalytics();
@@ -65,8 +69,9 @@ const LinkAnalytics = () => {
       {
         label: "Clicks Over Time",
         data: Object.values(clicksByDate),
-        borderColor: "rgb(75, 192, 192)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "#fff",
+        backgroundColor: "rgba(255,255,255,0.2)",
+        tension: 0.3,
       },
     ],
   };
@@ -77,64 +82,72 @@ const LinkAnalytics = () => {
       {
         label: "Devices",
         data: Object.values(clicksByDevice),
-        backgroundColor: ["#ff6384", "#36a2eb", "#ffce56", "#4bc0c0"],
+        backgroundColor: ["#ffffff", "#e5e5e5", "#cfcfcf", "#b5b5b5"],
       },
     ],
   };
 
-  if (!url) return <p>Loading...</p>;
+  if (!url) return <p className="text-center text-white">Loading...</p>;
 
   return (
-    <div className="space-y-8">
-      <Card>
+    <div className="min-h-screen px-4 py-10 bg-black text-white space-y-10">
+      <Card className="bg-zinc-900 text-white">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">{url.title}</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <p>
-              <strong>Original URL:</strong> {url.original_url}
-            </p>
-            <p>
-              <strong>Short URL:</strong> {url.short_url}
-            </p>
-            <p>
-              <strong>Created at:</strong>{" "}
-              {new Date(url.created_at).toLocaleString()}
-            </p>
-            <p>
-              <strong>Expiration Status:</strong>{" "}
-              {url.expiration_status ? "Expired" : "Active"}
-            </p>
-          </div>
+        <CardContent className="space-y-3">
+          <p>
+            <strong>Original URL:</strong> {url.original_url}
+          </p>
+          <p>
+            <strong>Short URL:</strong> {url.short_url}
+          </p>
+          <p>
+            <strong>Created:</strong>{" "}
+            {new Date(url.created_at).toLocaleString()}
+          </p>
+          <p>
+            <strong>Status:</strong>{" "}
+            {url.expiration_status ? "Expired" : "Active"}
+          </p>
         </CardContent>
       </Card>
 
-      {/* Clicks over time chart */}
-      <Card>
+      <Card className="bg-zinc-900 text-white">
         <CardHeader>
-          <CardTitle>Clicks Over Time</CardTitle>
+          <CardTitle className="text-xl">Clicks Over Time</CardTitle>
         </CardHeader>
         <CardContent>
-          <Line data={lineData} options={{ responsive: true }} />
+          <Line
+            data={lineData}
+            options={{
+              responsive: true,
+              plugins: { legend: { labels: { color: "#fff" } } },
+            }}
+          />
         </CardContent>
       </Card>
 
-      {/* Device/Browser breakdown chart */}
-      <Card>
+      <Card className="bg-zinc-900 text-white">
         <CardHeader>
-          <CardTitle>Device/Browser Breakdown</CardTitle>
+          <CardTitle className="text-xl">Device/Browser Breakdown</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="w-full h-64">
-            <Bar data={deviceData} options={{ responsive: true }} />
+            <Bar
+              data={deviceData}
+              options={{
+                responsive: true,
+                plugins: { legend: { labels: { color: "#fff" } } },
+              }}
+            />
           </div>
         </CardContent>
       </Card>
 
       <Button
         onClick={() => (window.location.href = "/dashboard")}
-        className="w-full mt-4"
+        className="w-full bg-white text-black font-bold hover:bg-zinc-200"
       >
         Back to Dashboard
       </Button>

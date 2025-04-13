@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { toast } from "react-toastify";
-import QRCode from "qrcode"; // <-- for toDataURL
+import QRCode from "qrcode";
 import { QRCode as QRVisual } from "react-qrcode-logo";
 import { useAuth } from "../context/AuthContext";
 
@@ -33,8 +33,8 @@ const formSchema = z.object({
 
 const CreateLink = ({ onLinkCreated }) => {
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { user, loading } = useAuth();
+  const [searchParams] = useSearchParams();
+  const { user } = useAuth();
   const rf = useRef();
 
   const longLink = searchParams.get("createNew");
@@ -62,18 +62,13 @@ const CreateLink = ({ onLinkCreated }) => {
   });
   const longUrlValue = watch("longUrl");
 
-  //   console.log("user from context:", user);
   const onSubmit = async (data) => {
-    console.log("user from context:", user);
     try {
-      // Generate QR code as Data URL
       const qrDataUrl = await QRCode.toDataURL(data.longUrl);
 
-      // Convert base64 Data URL to Blob
       const res = await fetch(qrDataUrl);
       const blob = await res.blob();
 
-      // Upload to Cloudinary
       const formData = new FormData();
       formData.append("file", blob);
       formData.append("upload_preset", "unsigned_qr_upload");
@@ -93,26 +88,24 @@ const CreateLink = ({ onLinkCreated }) => {
         throw new Error("Cloudinary upload failed");
       }
 
-      // Send to backend (make sure user_id is included in the request body)
       const response = await fetch("http://localhost:4000/urls", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        credentials: "include", // Ensure the request includes the session or token
+        credentials: "include",
         body: JSON.stringify({
           ...data,
-          user_id: user?._id, // Pass the user_id from the authenticated user
+          user_id: user?._id,
           qr: uploadData.secure_url,
         }),
       });
 
       if (!response.ok) throw new Error("Failed to create URL");
 
-      //   setSearchParams({}); // close the dialog
       toast.success("Link created successfully!");
-      setIsDialogOpen(false); // close modal first
+      setIsDialogOpen(false);
       if (onLinkCreated) onLinkCreated();
 
       setTimeout(() => {
@@ -125,40 +118,51 @@ const CreateLink = ({ onLinkCreated }) => {
   };
 
   return (
-    // <Dialog
-    //   defaultOpen={longLink}
-    //   onOpenChange={(res) => {
-    //     if (!res) setSearchParams({});
-    //   }}
-    // >
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger>
-        <Button>Create New Link</Button>
+        <Button className="bg-black text-white hover:bg-gray-800">
+          Create New Link
+        </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md bg-black text-white p-6 rounded-lg shadow-md">
         <DialogHeader>
-          <DialogTitle className="font-bold text-2xl">Create New</DialogTitle>
+          <DialogTitle className="font-bold text-2xl text-center mb-4">
+            Create New
+          </DialogTitle>
         </DialogHeader>
         {longUrlValue && (
           <div className="flex justify-center py-4">
             <QRVisual value={longUrlValue} size={250} />
           </div>
         )}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-          <Input placeholder="Link Title" {...register("title")} />
-          {errors.title && (
-            <p className="text-red-500 text-sm">{errors.title.message}</p>
-          )}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
+            <Input
+              placeholder="Link Title"
+              className="w-full bg-transparent border-b-2 border-white text-white focus:ring-0"
+              {...register("title")}
+            />
+            {errors.title && (
+              <p className="text-red-500 text-sm">{errors.title.message}</p>
+            )}
+          </div>
 
-          <Input placeholder="Enter URL" {...register("longUrl")} />
-          {errors.longUrl && (
-            <p className="text-red-500 text-sm">{errors.longUrl.message}</p>
-          )}
+          <div>
+            <Input
+              placeholder="Enter URL"
+              className="w-full bg-transparent border-b-2 border-white text-white focus:ring-0"
+              {...register("longUrl")}
+            />
+            {errors.longUrl && (
+              <p className="text-red-500 text-sm">{errors.longUrl.message}</p>
+            )}
+          </div>
 
           <div className="flex items-center gap-2">
-            <Card className="p-2">shorturls.in</Card>/
+            <Card className="p-2 text-white">shorturls.in</Card>/
             <Input
               placeholder="Custom URL (Optional)"
+              className="bg-transparent border-b-2 border-white text-white focus:ring-0"
               {...register("customUrl")}
             />
           </div>
@@ -166,8 +170,13 @@ const CreateLink = ({ onLinkCreated }) => {
             <p className="text-red-500 text-sm">{errors.customUrl.message}</p>
           )}
 
-          <DialogFooter className="sm:justify-start">
-            <Button type="submit">Create Link</Button>
+          <DialogFooter className="flex justify-start mt-4">
+            <Button
+              type="submit"
+              className="bg-black text-white hover:bg-gray-800"
+            >
+              Create Link
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
