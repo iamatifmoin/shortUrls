@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/:shortUrl",
+      "destination": "https://shorturls-aqah.onrender.com/:shortUrl"
+    }
+  ]
+}
