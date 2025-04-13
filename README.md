@@ -61,7 +61,7 @@ cd tinieurlz
 ```bash
 cd server
 npm install
-npm run dev
+npm start
 ```
 
 Create a `.env` file with:
@@ -69,6 +69,9 @@ Create a `.env` file with:
 ```env
 MONGO_URI=your_mongodb_uri
 JWT_SECRET=your_jwt_secret
+CLOUDINARY_CLOUD_NAME=cloud_name
+CLOUDINARY_API_KEY=cloud_api_key
+CLOUDINARY_API_SECRET=cloud_api_secret
 ```
 
 ### 3. Frontend Setup
@@ -77,6 +80,13 @@ JWT_SECRET=your_jwt_secret
 cd client
 npm install
 npm run dev
+```
+
+Create a `.env` file with:
+
+```env
+VITE_API_BASE_URL=base_uri (localhost for local dev)
+CLOUDINARY_CLOUD_NAME=cloud_name
 ```
 
 ---

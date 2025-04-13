@@ -116,7 +116,8 @@ const LinkAnalytics = () => {
                 <strong>Original URL:</strong> {url.original_url}
               </p>
               <p>
-                <strong>Short URL:</strong> {url.short_url}
+                <strong>Short URL:</strong> https://tinieurlz.vercel.app/
+                {url.short_url}
               </p>
               <p>
                 <strong>Created:</strong>{" "}
