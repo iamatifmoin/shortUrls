@@ -56,7 +56,7 @@ const LinkCard = ({ url, onDelete }) => {
           https://tinieurlz.vercel.app/
           {url?.custom_url ? url?.custom_url : url.short_url}
         </span>
-        <span className="flex items-center gap-1 text-sm text-gray-400 hover:underline cursor-pointer">
+        <span className="flex items-center gap-1 text-sm text-gray-400 cursor-pointer">
           {url?.original_url}
         </span>
         <span className="flex items-end font-extralight text-sm text-gray-400 flex-1">
@@ -72,21 +72,21 @@ const LinkCard = ({ url, onDelete }) => {
               `https://tinieurlz.vercel.app/${url?.short_url}`
             )
           }
-          className="text-white hover:bg-gray-700"
+          className="text-white hover:bg-gray-700 cursor-pointer"
         >
           <Copy />
         </Button>
         <Button
           variant="ghost"
           onClick={downloadImage}
-          className="text-white hover:bg-gray-700"
+          className="text-white hover:bg-gray-700 cursor-pointer"
         >
           <Download />
         </Button>
         <Button
           variant="ghost"
           onClick={deleteUrl}
-          className="text-red-500 hover:bg-gray-700"
+          className="text-red-500 hover:bg-gray-700 cursor-pointer"
         >
           <Trash />
         </Button>

@@ -72,17 +72,17 @@ const Dashboard = () => {
     <div className="min-h-screen bg-black text-white px-4 md:px-10 py-10 space-y-8">
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="bg-white text-black">
+        <Card className="bg-[#FAF7F0] text-black">
           <CardHeader>
-            <CardTitle>Total Links</CardTitle>
+            <CardTitle className="text-2xl">Total Links</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold">{urls.length}</p>
           </CardContent>
         </Card>
-        <Card className="bg-white text-black">
+        <Card className="bg-[#FAF7F0] text-black">
           <CardHeader>
-            <CardTitle>Total Clicks</CardTitle>
+            <CardTitle className="text-2xl">Total Clicks</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold">{clicks.length}</p>
@@ -100,19 +100,22 @@ const Dashboard = () => {
       <div className="relative w-full md:w-1/2">
         <Input
           type="text"
-          placeholder="Search links"
+          placeholder="Search links ..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pr-10 bg-white text-black"
+          className="pr-10 bg-[#FAF7F0] text-black"
         />
         <Filter className="absolute right-3 top-1/2 -translate-y-1/2 text-black w-5 h-5" />
       </div>
 
       {/* Links List */}
-      <div className="space-y-4">
+      <div className="space-y-0">
         {filteredUrls.length > 0 ? (
           filteredUrls.map((url) => (
-            <Card key={url._id} className="bg-white text-black">
+            <Card
+              key={url._id}
+              className="bg-black text-black border-0 outline-0"
+            >
               <CardHeader>
                 <LinkCard
                   url={url}

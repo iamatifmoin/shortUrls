@@ -25,7 +25,10 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center px-4 bg-black text-white">
       <h2 className="mb-12 text-center text-4xl sm:text-6xl font-extrabold leading-tight max-w-3xl">
-        Welcome to <span className="text-white">shortUrls</span>
+        Welcome to <span className="text-white">short</span>
+        <span className="text-gradient bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+          Urls
+        </span>
       </h2>
 
       <form
@@ -36,14 +39,14 @@ const LandingPage = () => {
           type="url"
           value={longURL}
           onChange={(e) => setLongURL(e.target.value)}
-          placeholder="Paste your long URL here..."
+          placeholder="Paste your URL here..."
           className="bg-white text-black placeholder:text-gray-500 py-6 px-4 flex-1"
         />
         <Button
           type="submit"
           className="py-6 px-6 bg-white text-black font-semibold hover:bg-gray-200 transition-all"
         >
-          Shorten This URL
+          Shorten URL
         </Button>
       </form>
     </div>

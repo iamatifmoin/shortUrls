@@ -7,14 +7,13 @@
 ## 🚀 Features
 
 - 🔐 JWT Authentication (Sign up / Login)
-- 🔗 Shorten long URLs (with optional expiration)
+- 🔗 Shorten long URLs
 - 📈 Per-link analytics:
   - Clicks over time (line chart)
   - Device/browser breakdown (bar chart)
-- 📅 Created date + Expiration status
 - 📎 Custom short URLs (optional enhancement)
 - 📷 QR Code generation
-- 🎨 Responsive black & white UI (ShadCN + TailwindCSS)
+- 🎨 Responsive UI (ShadCN + TailwindCSS)
 
 ---
 
@@ -33,7 +32,7 @@
 ## 📂 Project Structure
 
 ```
-tinieulz/
+tinieurlz/
 ├── client/                  # React frontend
 │   ├── src/
 │   │   ├── components/ui/   # ShadCN UI
@@ -82,51 +81,12 @@ npm run dev
 
 ---
 
-## 🔑 Authentication
+## Test Credentials
 
-- JWT stored in localStorage
-- Auth context tracks user session
-- Redirects to login if trying to shorten or view analytics while unauthenticated
-
----
-
-## 🌐 API Overview
-
-### POST `/api/auth/login`
-
-Authenticate user and return JWT.
-
-### POST `/api/urls`
-
-Create a short URL (requires JWT).
-
-### GET `/api/urls/:id`
-
-Get info for a specific short URL.
-
-### GET `/api/clicks/:id`
-
-Get all click data for that URL.
-
----
-
-## 📊 Analytics Page
-
-Each short URL has a detailed analytics page (`/link/:id`) showing:
-
-- 📅 Clicks over time (Line chart)
-- 📱 Devices/Browsers used (Bar chart)
-- 🔗 Original vs Short URL
-- ⏰ Created at + Expiration status
-- 🔙 “Back to Dashboard” button
-
----
-
-## 📸 QR Code
-
-When a URL is created, a QR code is generated using the short URL and displayed in the dashboard.
-
----
+```bash
+email: intern@dacoid.com
+password: Test123
+```
 
 ## ✨ Future Enhancements
 
@@ -135,14 +95,6 @@ When a URL is created, a QR code is generated using the short URL and displayed 
 - 📥 Export analytics as CSV
 - 🔎 Filter analytics by date
 - 📊 Pie chart toggle
-
----
-
-## 🛡 License
-
-MIT License. Feel free to use, modify, and contribute.
-
----
 
 ## 👨‍💻 Author
 

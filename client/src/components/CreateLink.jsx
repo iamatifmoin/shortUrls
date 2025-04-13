@@ -121,7 +121,7 @@ const CreateLink = ({ onLinkCreated }) => {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger>
-        <Button className="bg-black text-white hover:bg-gray-800">
+        <Button className="bg-[#FAF7F0] text-black cursor-pointer">
           Create New Link
         </Button>
       </DialogTrigger>
@@ -160,7 +160,7 @@ const CreateLink = ({ onLinkCreated }) => {
           </div>
 
           <div className="flex items-center gap-2">
-            <Card className="p-2 text-white">shorturls.in</Card>/
+            <Card className="p-2 text-white">tinieurlz.vercel.app</Card>/
             <Input
               placeholder="Custom URL (Optional)"
               className="bg-transparent border-b-2 border-white text-white focus:ring-0"
@@ -174,7 +174,7 @@ const CreateLink = ({ onLinkCreated }) => {
           <DialogFooter className="flex justify-start mt-4">
             <Button
               type="submit"
-              className="bg-black text-white hover:bg-gray-800"
+              className="bg-[#FAF7F0] text-black cursor-pointer"
             >
               Create Link
             </Button>

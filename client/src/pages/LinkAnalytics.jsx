@@ -16,6 +16,7 @@ import {
 } from "chart.js";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import QRCode from "qrcode";
 
 ChartJS.register(
   CategoryScale,
@@ -33,6 +34,7 @@ const LinkAnalytics = () => {
   const { id } = useParams();
   const [clicks, setClicks] = useState([]);
   const [url, setUrl] = useState(null);
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
 
   const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -45,6 +47,10 @@ const LinkAnalytics = () => {
         ]);
         setClicks(clickRes.data);
         setUrl(urlRes.data);
+
+        // Generate QR code from short URL
+        const qr = await QRCode.toDataURL(urlRes.data.short_url);
+        setQrCodeUrl(qr);
       } catch (err) {
         console.error("Failed to fetch analytics", err);
       }
@@ -72,8 +78,12 @@ const LinkAnalytics = () => {
         label: "Clicks Over Time",
         data: Object.values(clicksByDate),
         borderColor: "#fff",
-        backgroundColor: "rgba(255,255,255,0.2)",
+        backgroundColor: "rgba(75, 192, 192, 0.4)",
         tension: 0.3,
+        pointBackgroundColor: "#fff",
+        pointBorderColor: "#48a9a6",
+        pointBorderWidth: 2,
+        pointRadius: 5,
       },
     ],
   };
@@ -84,7 +94,7 @@ const LinkAnalytics = () => {
       {
         label: "Devices",
         data: Object.values(clicksByDevice),
-        backgroundColor: ["#ffffff", "#e5e5e5", "#cfcfcf", "#b5b5b5"],
+        backgroundColor: ["#ff6384", "#36a2eb", "#ffce56", "#4bc0c0"],
       },
     ],
   };
@@ -93,28 +103,42 @@ const LinkAnalytics = () => {
 
   return (
     <div className="min-h-screen px-4 py-10 bg-black text-white space-y-10">
+      {/* URL Info + QR Code */}
       <Card className="bg-zinc-900 text-white">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">{url.title}</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <p>
-            <strong>Original URL:</strong> {url.original_url}
-          </p>
-          <p>
-            <strong>Short URL:</strong> {url.short_url}
-          </p>
-          <p>
-            <strong>Created:</strong>{" "}
-            {new Date(url.created_at).toLocaleString()}
-          </p>
-          <p>
-            <strong>Status:</strong>{" "}
-            {url.expiration_status ? "Expired" : "Active"}
-          </p>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-6 items-center">
+            {/* Left: Info */}
+            <div className="space-y-3">
+              <p>
+                <strong>Original URL:</strong> {url.original_url}
+              </p>
+              <p>
+                <strong>Short URL:</strong> {url.short_url}
+              </p>
+              <p>
+                <strong>Created:</strong>{" "}
+                {new Date(url.created_at).toLocaleString()}
+              </p>
+              <p>
+                <strong>Status:</strong>{" "}
+                {url.expiration_status ? "Expired" : "Active"}
+              </p>
+            </div>
+
+            {/* Right: QR Code */}
+            {qrCodeUrl && (
+              <div className="flex justify-center md:justify-end">
+                <img src={qrCodeUrl} alt="QR Code" className="w-40 h-40" />
+              </div>
+            )}
+          </div>
         </CardContent>
       </Card>
 
+      {/* Clicks Over Time */}
       <Card className="bg-zinc-900 text-white">
         <CardHeader>
           <CardTitle className="text-xl">Clicks Over Time</CardTitle>
@@ -125,11 +149,22 @@ const LinkAnalytics = () => {
             options={{
               responsive: true,
               plugins: { legend: { labels: { color: "#fff" } } },
+              scales: {
+                x: {
+                  grid: { color: "#444" },
+                  ticks: { color: "#fff" },
+                },
+                y: {
+                  grid: { color: "#444" },
+                  ticks: { color: "#fff" },
+                },
+              },
             }}
           />
         </CardContent>
       </Card>
 
+      {/* Device Breakdown */}
       <Card className="bg-zinc-900 text-white">
         <CardHeader>
           <CardTitle className="text-xl">Device/Browser Breakdown</CardTitle>
@@ -141,12 +176,17 @@ const LinkAnalytics = () => {
               options={{
                 responsive: true,
                 plugins: { legend: { labels: { color: "#fff" } } },
+                scales: {
+                  x: { ticks: { color: "#fff" } },
+                  y: { ticks: { color: "#fff" } },
+                },
               }}
             />
           </div>
         </CardContent>
       </Card>
 
+      {/* Back Button */}
       <Button
         onClick={() => (window.location.href = "/dashboard")}
         className="w-full bg-white text-black font-bold hover:bg-zinc-200"
