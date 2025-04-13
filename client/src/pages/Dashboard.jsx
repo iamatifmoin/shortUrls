@@ -38,6 +38,11 @@ const Dashboard = () => {
       const urlIds = res.data.map((url) => url._id).join(",");
       const clickRes = await axios.get(
         `${VITE_API_BASE_URL}/clicks?urlIds=${urlIds}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // or from cookies
+          },
+        },
         { withCredentials: true }
       );
       setClicks(clickRes.data);
