@@ -27,7 +27,7 @@ const formSchema = z.object({
 const Login = () => {
   const { setUser } = useAuth();
   const navigate = useNavigate();
-  const REACT_APP_API_BASE_URL = import.meta.env.REACT_APP_API_BASE_URL;
+  const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -44,7 +44,7 @@ const Login = () => {
 
   const onSubmit = async (values) => {
     try {
-      const res = await axios.post(`${REACT_APP_API_BASE_URL}/login`, values, {
+      const res = await axios.post(`${VITE_API_BASE_URL}/login`, values, {
         withCredentials: true,
       });
 

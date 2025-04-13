@@ -37,14 +37,14 @@ const SignUp = () => {
   const { setUser } = useAuth();
   let [searchParams] = useSearchParams();
   const longUrl = searchParams.get("createNew");
-  const REACT_APP_API_BASE_URL = import.meta.env.REACT_APP_API_BASE_URL;
+  const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const generateError = (err) => toast.error(err, { position: "bottom-right" });
 
   const onSubmit = async (values) => {
     try {
       const { data } = await axios.post(
-        `${REACT_APP_API_BASE_URL}/register`,
+        `${VITE_API_BASE_URL}/register`,
         {
           ...values,
         },

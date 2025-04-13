@@ -34,14 +34,14 @@ const LinkAnalytics = () => {
   const [clicks, setClicks] = useState([]);
   const [url, setUrl] = useState(null);
 
-  const REACT_APP_API_BASE_URL = import.meta.env.REACT_APP_API_BASE_URL;
+  const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
         const [clickRes, urlRes] = await Promise.all([
-          axios.get(`${REACT_APP_API_BASE_URL}/clicks/${id}`),
-          axios.get(`${REACT_APP_API_BASE_URL}/urls/${id}`),
+          axios.get(`${VITE_API_BASE_URL}/clicks/${id}`),
+          axios.get(`${VITE_API_BASE_URL}/urls/${id}`),
         ]);
         setClicks(clickRes.data);
         setUrl(urlRes.data);

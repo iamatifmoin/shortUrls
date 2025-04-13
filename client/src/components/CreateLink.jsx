@@ -41,7 +41,7 @@ const CreateLink = ({ onLinkCreated }) => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(!!longLink);
 
   const token = localStorage.getItem("jwt_token");
-  const REACT_APP_API_BASE_URL = import.meta.env.REACT_APP_API_BASE_URL;
+  const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   if (!token) {
     toast.error("User token is missing. Please log in again.");
@@ -90,7 +90,7 @@ const CreateLink = ({ onLinkCreated }) => {
         throw new Error("Cloudinary upload failed");
       }
 
-      const response = await fetch(`${REACT_APP_API_BASE_URL}/urls`, {
+      const response = await fetch(`${VITE_API_BASE_URL}/urls`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

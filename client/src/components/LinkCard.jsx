@@ -6,7 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const LinkCard = ({ url, onDelete }) => {
-  const REACT_APP_API_BASE_URL = import.meta.env.REACT_APP_API_BASE_URL;
+  const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const downloadImage = () => {
     const imageUrl = url?.qr;
@@ -25,7 +25,7 @@ const LinkCard = ({ url, onDelete }) => {
     if (!window.confirm("Are you sure you want to delete this link?")) return;
 
     try {
-      await axios.delete(`${REACT_APP_API_BASE_URL}/urls/${url._id}`, {
+      await axios.delete(`${VITE_API_BASE_URL}/urls/${url._id}`, {
         withCredentials: true,
       });
       toast.success("Link deleted successfully");
