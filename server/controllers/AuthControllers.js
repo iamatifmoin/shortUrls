@@ -85,7 +85,11 @@ module.exports.login = async (req, res) => {
       });
     }
 
-    const token = createToken(user._id);
+    const secret = process.env.JWT_SECRET;
+    const token = jwt.sign({ id: user.id, email: user.email }, secret, {
+      expiresIn: "1h",
+    });
+
     // res.cookie("jwt", token, {
     //   httpOnly: false,
     //   withCredentials: true,
