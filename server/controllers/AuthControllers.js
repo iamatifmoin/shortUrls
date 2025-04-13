@@ -1,5 +1,6 @@
 const UserModel = require("../models/UserModel");
 const jwt = require("jsonwebtoken");
+require("dotenv").config({ path: "./.env" });
 
 const maxAge = 3 * 24 * 60 * 60;
 
@@ -99,7 +100,10 @@ module.exports.login = async (req, res) => {
     });
 
     // res.status(200).json({ user: user._id });
-    res.status(200).json({ user: user._id, email: user.email });
+    res.status(200).json({
+      user: { _id: user._id, email: user.email },
+      token, // 👈 Return the token here!
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({ errors: { email: "Server error" } });

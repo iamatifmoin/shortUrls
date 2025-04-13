@@ -61,10 +61,14 @@ const Login = () => {
         }
       } else {
         toast.success("Logged in successfully!", { position: "bottom-right" });
+        // ✅ Save JWT token and user
+        localStorage.setItem("jwt_token", data.token); // <-- store token
         localStorage.setItem("user", JSON.stringify(data.user));
-        setUser(data.user); // if using context
+        setUser(data.user);
+
+        // ✅ Redirect to dashboard or with long URL
         setTimeout(() => {
-          navigate(`/dashboard?${longUrl ? `createNew=${longUrl}` : ""}`);
+          navigate(`/dashboard${longUrl ? `?createNew=${longUrl}` : ""}`);
         }, 1500);
       }
     } catch (err) {

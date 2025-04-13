@@ -1,11 +1,20 @@
-import React from "react";
-import { useSearchParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Login from "../components/Login";
 import SignUp from "../components/SignUp";
+import { useAuth } from "../context/AuthContext"; // ✅ Make sure this is correct
 
 const Auth = () => {
   const [searchParams] = useSearchParams();
+  const { user } = useAuth(); // ✅ Access user from context
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard"); // ✅ Redirect if user is already logged in
+    }
+  }, [user, navigate]);
 
   return (
     <div className="mt-36 flex flex-col items-center gap-10">

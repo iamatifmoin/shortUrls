@@ -7,9 +7,9 @@ import AppLayout from "./layouts/AppLayout";
 import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
-import Link from "./pages/Link";
-import Redirect from "./pages/Redirect";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import RedirectLink from "./components/RedirectLink";
+import LinkAnalytics from "./pages/LinkAnalytics";
 
 // ✅ Optional Protected Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -39,11 +39,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/link/:id",
-        element: <Link />,
+        element: <LinkAnalytics />,
       },
       {
-        path: "/:id",
-        element: <Redirect />,
+        path: "/:shortUrl",
+        element: <RedirectLink />,
       },
     ],
   },

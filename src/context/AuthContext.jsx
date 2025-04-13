@@ -9,9 +9,13 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        setUser(JSON.parse(storedUser)); // Safely parse the stored user data
+      } catch (err) {
+        console.error("Failed to parse user from localStorage:", err);
+      }
     }
-    setLoading(false); // set loading false only after reading localStorage
+    setLoading(false); // Set loading false only after reading localStorage
   }, []);
 
   const logout = () => {
@@ -21,7 +25,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user, setUser, logout, loading }}>
-      {!loading && children} {/* ✅ block children until auth is ready */}
+      {!loading && children} {/* Block children until auth is ready */}
     </AuthContext.Provider>
   );
 };

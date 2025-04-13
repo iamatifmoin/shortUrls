@@ -14,7 +14,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -33,6 +34,9 @@ const SignUp = () => {
   });
 
   const navigate = useNavigate();
+  const { setUser } = useAuth();
+  let [searchParams] = useSearchParams();
+  const longUrl = searchParams.get("createNew");
 
   const generateError = (err) => toast.error(err, { position: "bottom-right" });
 
@@ -53,7 +57,18 @@ const SignUp = () => {
           if (email) generateError(email);
           else if (password) generateError(password);
         } else {
-          navigate("/");
+          toast.success("Registered successfully!", {
+            position: "bottom-right",
+          });
+
+          localStorage.setItem("jwt_token", data.token); // <-- store token
+          localStorage.setItem("user", JSON.stringify(data.user));
+          setUser(data.user);
+
+          // ✅ Redirect to dashboard or with long URL
+          setTimeout(() => {
+            navigate(`/dashboard${longUrl ? `?createNew=${longUrl}` : ""}`);
+          }, 1500);
         }
       }
     } catch (err) {

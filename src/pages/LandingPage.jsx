@@ -2,15 +2,24 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const LandingPage = () => {
-  const [longURL, setLongURL] = useState();
+  const [longURL, setLongURL] = useState("");
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const handleShorten = (e) => {
     e.preventDefault();
 
-    if (longURL) navigate(`auth?createNew=${longURL}`);
+    if (longURL) {
+      const encodedURL = encodeURIComponent(longURL);
+      if (user) {
+        navigate(`/dashboard?createNew=${encodedURL}`);
+      } else {
+        navigate(`/auth?createNew=${encodedURL}`);
+      }
+    }
   };
 
   return (

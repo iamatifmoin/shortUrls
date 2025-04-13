@@ -42,7 +42,7 @@ const LinkCard = ({ url, onDelete }) => {
         alt="qr code"
         className="h-32 object-contain ring ring-blue-500 self-start"
       />
-      <Link to={`/link/${url?.id}`} className="flex flex-col flex-1">
+      <Link to={`/link/${url?._id}`} className="flex flex-col flex-1">
         <span className="text-3xl font-extrabold hover:underline curson-pointer">
           {url?.title}
         </span>

@@ -19,31 +19,26 @@ const Dashboard = () => {
 
   if (!user) return <Navigate to="/auth" />;
 
-  useEffect(() => {
-    if (user) {
-      const fetchURLs = async () => {
-        try {
-          const res = await axios.get("http://localhost:4000/urls", {
-            withCredentials: true,
-          });
-          setUrls(res.data);
-          const urlIds = res.data.map((url) => url._id).join(",");
-          const clickRes = await axios.get(
-            `http://localhost:4000/clicks?urlIds=${urlIds}`,
-            {
-              withCredentials: true,
-            }
-          );
-          setClicks(clickRes.data);
-
-          console.log(clickRes.data);
-        } catch (err) {
-          console.error(err);
-          toast.error("Failed to fetch URLs or clicks");
-        }
-      };
-      fetchURLs();
+  const fetchURLs = async () => {
+    try {
+      const res = await axios.get("http://localhost:4000/urls", {
+        withCredentials: true,
+      });
+      setUrls(res.data);
+      const urlIds = res.data.map((url) => url._id).join(",");
+      const clickRes = await axios.get(
+        `http://localhost:4000/clicks?urlIds=${urlIds}`,
+        { withCredentials: true }
+      );
+      setClicks(clickRes.data);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to fetch URLs or clicks");
     }
+  };
+
+  useEffect(() => {
+    if (user) fetchURLs();
   }, [user]);
 
   const filteredUrls = urls.filter((url) => {
@@ -60,7 +55,6 @@ const Dashboard = () => {
     );
   });
 
-  // console.log(user);
   return (
     <div className="flex flex-col gap-8">
       <div className="grid grid-cols-2 gap-4">
@@ -83,7 +77,8 @@ const Dashboard = () => {
       </div>
       <div className="flex justify-between">
         <h1 className="text-4xl font-extrabold">My Links</h1>
-        <CreateLink />
+        {/* <CreateLink user_id={user} /> */}
+        <CreateLink onLinkCreated={fetchURLs} />
       </div>
       <div className="relative">
         <Input
