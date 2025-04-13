@@ -4,11 +4,13 @@ import { toast } from "react-toastify";
 import { Card, CardContent } from "@/components/ui/card";
 
 const RedirectLink = () => {
+  const REACT_APP_API_BASE_URL = import.meta.env.REACT_APP_API_BASE_URL;
+
   const { shortUrl } = useParams();
 
   useEffect(() => {
     if (shortUrl) {
-      window.location.href = `${process.env.REACT_APP_API_BASE_URL}/${shortUrl}`;
+      window.location.href = `${REACT_APP_API_BASE_URL}/${shortUrl}`;
     }
   }, [shortUrl]);
 

@@ -41,6 +41,7 @@ const CreateLink = ({ onLinkCreated }) => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(!!longLink);
 
   const token = localStorage.getItem("jwt_token");
+  const REACT_APP_API_BASE_URL = import.meta.env.REACT_APP_API_BASE_URL;
 
   if (!token) {
     toast.error("User token is missing. Please log in again.");
@@ -61,6 +62,7 @@ const CreateLink = ({ onLinkCreated }) => {
     },
   });
   const longUrlValue = watch("longUrl");
+  const CLOUDINARY_CLOUD_NAME = import.meta.env.CLOUDINARY_CLOUD_NAME;
 
   const onSubmit = async (data) => {
     try {
@@ -75,7 +77,7 @@ const CreateLink = ({ onLinkCreated }) => {
       formData.append("folder", "qrs");
 
       const cloudinaryRes = await fetch(
-        `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
         {
           method: "POST",
           body: formData,
@@ -88,22 +90,19 @@ const CreateLink = ({ onLinkCreated }) => {
         throw new Error("Cloudinary upload failed");
       }
 
-      const response = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/urls`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            ...data,
-            user_id: user?._id,
-            qr: uploadData.secure_url,
-          }),
-        }
-      );
+      const response = await fetch(`${REACT_APP_API_BASE_URL}/urls`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          ...data,
+          user_id: user?._id,
+          qr: uploadData.secure_url,
+        }),
+      });
 
       if (!response.ok) throw new Error("Failed to create URL");
 

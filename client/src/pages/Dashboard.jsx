@@ -15,6 +15,8 @@ const Dashboard = () => {
   const [clicks, setClicks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const REACT_APP_API_BASE_URL = import.meta.env.REACT_APP_API_BASE_URL;
+
   if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center bg-black text-white">
@@ -26,16 +28,13 @@ const Dashboard = () => {
 
   const fetchURLs = async () => {
     try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/urls`,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get(`${REACT_APP_API_BASE_URL}/urls`, {
+        withCredentials: true,
+      });
       setUrls(res.data);
       const urlIds = res.data.map((url) => url._id).join(",");
       const clickRes = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/clicks?urlIds=${urlIds}`,
+        `${REACT_APP_API_BASE_URL}/clicks?urlIds=${urlIds}`,
         { withCredentials: true }
       );
       setClicks(clickRes.data);
