@@ -53,7 +53,7 @@ const createURL = async (req, res) => {
     formData.append("file", blob);
     formData.append("upload_preset", "unsigned_qr_upload");
     formData.append("folder", "qrs");
-
+    console.log(CLOUDINARY_CLOUD_NAME);
     const cloudinaryRes = await fetch(
       `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`,
       {
