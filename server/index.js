@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/AuthRoutes");
 const urlRoutes = require("./routes/URLRoutes");
 const clickRoutes = require("./routes/ClickRoutes");
-require("dotenv").config({ path: "./.env" });
+require("dotenv").config({ path: "../.env" });
 
 const app = express();
 const db = process.env.MONGODB_URI;
