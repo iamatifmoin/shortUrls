@@ -8,7 +8,7 @@ const RedirectLink = () => {
 
   useEffect(() => {
     if (shortUrl) {
-      window.location.href = `http://localhost:4000/${shortUrl}`;
+      window.location.href = `${process.env.REACT_APP_API_BASE_URL}/${shortUrl}`;
     }
   }, [shortUrl]);
 

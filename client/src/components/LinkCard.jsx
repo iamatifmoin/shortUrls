@@ -23,9 +23,12 @@ const LinkCard = ({ url, onDelete }) => {
     if (!window.confirm("Are you sure you want to delete this link?")) return;
 
     try {
-      await axios.delete(`http://localhost:4000/urls/${url._id}`, {
-        withCredentials: true,
-      });
+      await axios.delete(
+        `${process.env.REACT_APP_API_BASE_URL}/urls/${url._id}`,
+        {
+          withCredentials: true,
+        }
+      );
       toast.success("Link deleted successfully");
       onDelete(url._id); // Inform parent to update UI
     } catch (err) {
@@ -48,7 +51,7 @@ const LinkCard = ({ url, onDelete }) => {
           {url?.title}
         </span>
         <span className="text-2xl text-blue-400 font-bold hover:underline cursor-pointer">
-          https://shorturls.in/
+          https://tinieurlz.vercel.app/
           {url?.custom_url ? url?.custom_url : url.short_url}
         </span>
         <span className="flex items-center gap-1 text-sm text-gray-400 hover:underline cursor-pointer">
@@ -64,7 +67,7 @@ const LinkCard = ({ url, onDelete }) => {
           variant="ghost"
           onClick={() =>
             navigator.clipboard.writeText(
-              `https://shorturls.in/${url?.short_url}`
+              `https://tinieurlz.vercel.app/${url?.short_url}`
             )
           }
           className="text-white hover:bg-gray-700"

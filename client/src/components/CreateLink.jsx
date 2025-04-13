@@ -75,7 +75,7 @@ const CreateLink = ({ onLinkCreated }) => {
       formData.append("folder", "qrs");
 
       const cloudinaryRes = await fetch(
-        `https://api.cloudinary.com/v1_1/drabxbmsa/image/upload`,
+        `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`,
         {
           method: "POST",
           body: formData,
@@ -88,19 +88,22 @@ const CreateLink = ({ onLinkCreated }) => {
         throw new Error("Cloudinary upload failed");
       }
 
-      const response = await fetch("http://localhost:4000/urls", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          ...data,
-          user_id: user?._id,
-          qr: uploadData.secure_url,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/urls`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            ...data,
+            user_id: user?._id,
+            qr: uploadData.secure_url,
+          }),
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to create URL");
 

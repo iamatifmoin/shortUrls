@@ -43,9 +43,13 @@ const Login = () => {
 
   const onSubmit = async (values) => {
     try {
-      const res = await axios.post("http://localhost:4000/login", values, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/login`,
+        values,
+        {
+          withCredentials: true,
+        }
+      );
 
       const data = res.data;
 

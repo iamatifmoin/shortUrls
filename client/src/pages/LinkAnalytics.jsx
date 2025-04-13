@@ -38,8 +38,8 @@ const LinkAnalytics = () => {
     const fetchAnalytics = async () => {
       try {
         const [clickRes, urlRes] = await Promise.all([
-          axios.get(`http://localhost:4000/clicks/${id}`),
-          axios.get(`http://localhost:4000/urls/${id}`),
+          axios.get(`${process.env.REACT_APP_API_BASE_URL}/clicks/${id}`),
+          axios.get(`${process.env.REACT_APP_API_BASE_URL}/urls/${id}`),
         ]);
         setClicks(clickRes.data);
         setUrl(urlRes.data);

@@ -22,7 +22,7 @@ mongoose
 
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://tinieurlz.vercel.app/"],
     methods: ["GET", "POST", "DELETE"],
     credentials: true,
   })
@@ -33,7 +33,12 @@ app.use(express.json());
 app.use("/", authRoutes);
 app.use("/", urlRoutes);
 app.use("/", clickRoutes);
+app.get("/", (req, res) => {
+  res.send("🟢 API is running. Use the frontend to interact.");
+});
 
-app.listen(4000, () => {
-  console.log("🚀 Server started on Port 4000");
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server started on Port ${PORT}`);
 });

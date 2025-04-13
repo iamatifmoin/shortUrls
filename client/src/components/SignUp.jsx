@@ -43,7 +43,7 @@ const SignUp = () => {
   const onSubmit = async (values) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/register",
+        `${process.env.REACT_APP_API_BASE_URL}/register`,
         {
           ...values,
         },

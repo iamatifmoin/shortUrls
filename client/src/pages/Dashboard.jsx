@@ -26,13 +26,16 @@ const Dashboard = () => {
 
   const fetchURLs = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/urls", {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/urls`,
+        {
+          withCredentials: true,
+        }
+      );
       setUrls(res.data);
       const urlIds = res.data.map((url) => url._id).join(",");
       const clickRes = await axios.get(
-        `http://localhost:4000/clicks?urlIds=${urlIds}`,
+        `${process.env.REACT_APP_API_BASE_URL}/clicks?urlIds=${urlIds}`,
         { withCredentials: true }
       );
       setClicks(clickRes.data);
