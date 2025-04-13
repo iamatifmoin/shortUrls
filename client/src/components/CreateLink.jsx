@@ -62,7 +62,6 @@ const CreateLink = ({ onLinkCreated }) => {
     },
   });
   const longUrlValue = watch("longUrl");
-  const CLOUDINARY_CLOUD_NAME = import.meta.env.CLOUDINARY_CLOUD_NAME;
 
   const onSubmit = async (data) => {
     try {
@@ -77,7 +76,7 @@ const CreateLink = ({ onLinkCreated }) => {
       formData.append("folder", "qrs");
 
       const cloudinaryRes = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+        `https://api.cloudinary.com/v1_1/drabxbmsa/image/upload`,
         {
           method: "POST",
           body: formData,

@@ -53,9 +53,8 @@ const createURL = async (req, res) => {
     formData.append("file", blob);
     formData.append("upload_preset", "unsigned_qr_upload");
     formData.append("folder", "qrs");
-    console.log(CLOUDINARY_CLOUD_NAME);
     const cloudinaryRes = await fetch(
-      `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`,
+      `https://api.cloudinary.com/v1_1/drabxbmsa/image/upload`,
       {
         method: "POST",
         body: formData,
@@ -74,7 +73,6 @@ const createURL = async (req, res) => {
       user_id, // Use the user_id extracted from the token
       original_url: longUrl,
       custom_url: customUrl || "",
-      short_url,
       qr: uploadData.secure_url,
     });
 
@@ -82,7 +80,9 @@ const createURL = async (req, res) => {
     return res.status(201).json(newUrl);
   } catch (err) {
     console.error("Error creating short URL:", err);
-    return res.status(500).json({ message: "Error creating short URL" });
+    return res
+      .status(500)
+      .json({ message: "Error creating short URL", error: err });
   }
 };
 
