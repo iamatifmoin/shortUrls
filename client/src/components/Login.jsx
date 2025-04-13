@@ -45,6 +45,9 @@ const Login = () => {
   const onSubmit = async (values) => {
     try {
       const res = await axios.post(`${VITE_API_BASE_URL}/login`, values, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // or from cookies
+        },
         withCredentials: true,
       });
 

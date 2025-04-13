@@ -29,6 +29,9 @@ const Dashboard = () => {
   const fetchURLs = async () => {
     try {
       const res = await axios.get(`${VITE_API_BASE_URL}/urls`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // or from cookies
+        },
         withCredentials: true,
       });
       setUrls(res.data);

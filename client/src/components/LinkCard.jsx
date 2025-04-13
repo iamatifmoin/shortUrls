@@ -26,6 +26,9 @@ const LinkCard = ({ url, onDelete }) => {
 
     try {
       await axios.delete(`${VITE_API_BASE_URL}/urls/${url._id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // or from cookies
+        },
         withCredentials: true,
       });
       toast.success("Link deleted successfully");

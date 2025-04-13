@@ -49,6 +49,11 @@ const SignUp = () => {
           ...values,
         },
         {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // or from cookies
+          },
+        },
+        {
           withCredentials: true,
         }
       );
