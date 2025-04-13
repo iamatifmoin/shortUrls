@@ -21,6 +21,4 @@ router.post("/urls", verifyToken, createURL); // Add a POST route for URL creati
 
 router.get("/urls/:id", getUrlById);
 
-router.get("/:shortUrl", getLongUrl);
-
 module.exports = router;

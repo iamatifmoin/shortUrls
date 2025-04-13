@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/AuthRoutes");
 const urlRoutes = require("./routes/URLRoutes");
 const clickRoutes = require("./routes/ClickRoutes");
+const { getLongUrl } = require("./controllers/URLController");
 require("dotenv").config({ path: "./.env" });
 
 const app = express();
@@ -33,6 +34,7 @@ app.use(express.json());
 app.use("/", authRoutes);
 app.use("/", urlRoutes);
 app.use("/", clickRoutes);
+app.get("/:shortUrl", getLongUrl);
 app.get("/", (req, res) => {
   res.send("🟢 API is running. Use the frontend to interact.");
 });

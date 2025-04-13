@@ -1,4 +1,5 @@
 // controllers/ClickController.js
+const { default: mongoose } = require("mongoose");
 const ClickModel = require("../models/ClickModel");
 
 const getClicks = async (req, res) => {
@@ -6,10 +7,13 @@ const getClicks = async (req, res) => {
     const { urlIds } = req.query;
     const idsArray = urlIds?.split(",") || [];
 
-    const clicks = await ClickModel.find({ url_id: { $in: idsArray } });
+    // Convert each id to ObjectId using 'new'
+    const objectIds = idsArray.map((id) => new mongoose.Types.ObjectId(id));
+
+    const clicks = await ClickModel.find({ url_id: { $in: objectIds } });
     res.status(200).json(clicks);
   } catch (err) {
-    console.error(err);
+    console.error("Error fetching clicks:", err);
     res.status(400).json({ error: "Failed to fetch Clicks" });
   }
 };
