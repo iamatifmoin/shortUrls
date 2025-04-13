@@ -19,8 +19,8 @@ router.delete("/urls/:id", verifyToken, deleteURL);
 // POST a new URL (Create URL)
 router.post("/urls", verifyToken, createURL); // Add a POST route for URL creation
 
-router.get("/:shortUrl", getLongUrl);
-
 router.get("/urls/:id", getUrlById);
+
+router.get("/:shortUrl", getLongUrl);
 
 module.exports = router;

@@ -7,7 +7,10 @@ const verifyToken = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-router.get("/clicks", verifyToken, getClicks);
-router.get("/clicks/:id", getClicksForUrl);
+// For multiple URLs (used in Dashboard)
+router.get("/clicks", verifyToken, getClicks); // expects ?urlIds=id1,id2,id3
+
+// For single URL (used in LinkAnalytics)
+router.get("/clicks/for/:id", getClicksForUrl); // renamed to prevent conflict
 
 module.exports = router;
