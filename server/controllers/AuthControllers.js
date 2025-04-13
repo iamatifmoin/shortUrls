@@ -53,7 +53,7 @@ module.exports.register = async (req, res, next) => {
       httpOnly: true, // Security: JS can't access it
       // secure: false, // Set to true in production (HTTPS only)
       secure: process.env.NODE_ENV === "production",
-      sameSite: "Lax", // Or "Strict" if you want tighter control
+      sameSite: "None", // Or "Strict" if you want tighter control
       maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
     });
     res.status(201).json({ user: user._id, created: true });
@@ -99,7 +99,7 @@ module.exports.login = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "Lax",
+      sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
 
