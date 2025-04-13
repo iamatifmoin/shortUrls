@@ -2,6 +2,7 @@ const ClickModel = require("../models/ClickModel");
 const URLModel = require("../models/URLModel");
 const cloudinary = require("cloudinary").v2;
 const QRCode = require("qrcode");
+require("dotenv").config({ path: "./.env" });
 
 const getURLs = async (req, res) => {
   try {
@@ -54,7 +55,7 @@ const createURL = async (req, res) => {
     formData.append("folder", "qrs");
 
     const cloudinaryRes = await fetch(
-      `https://api.cloudinary.com/v1_1/drabxbmsa/image/upload`,
+      `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`,
       {
         method: "POST",
         body: formData,

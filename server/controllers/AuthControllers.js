@@ -49,7 +49,7 @@ module.exports.register = async (req, res, next) => {
     //   httpOnly: true,
     //   maxAge: maxAge * 1000,
     // });
-    res.cookie("jwt", token, {
+    res.cookie("token", token, {
       httpOnly: true, // Security: JS can't access it
       // secure: false, // Set to true in production (HTTPS only)
       secure: process.env.NODE_ENV === "production",
